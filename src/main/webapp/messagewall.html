@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wall</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+      <div class="container">
+        <div class="from">
+            <span>谁</span>
+            <input type="text">
+        </div>
+        <div class="to">
+            <span>对</span>
+            <input type="text">
+        </div>
+        <div class="mes">
+            <span>说</span>
+            <input type="text">
+        </div>
+        <div>
+            <button class="submit">提交</button>
+        </div>
+
+      </div>
+      <script>
+    loadMes();
+    let submit=document.querySelector('.submit');
+       submit.onclick=function(){
+        let inputs=document.querySelectorAll('input');
+       let from=inputs[0].value;
+       let to=inputs[1].value;
+       let mes=inputs[2].value;
+       
+        if(from==''||to==''||mes=='')
+        return;
+        console.log(from);
+        let body={
+            from:from,
+            to:to,
+            mes:mes
+        };
+        $.ajax({
+            type:'post',
+            url:'wall',
+            contentType:"application/json;charset=utf8",
+            data:JSON.stringify(body),
+            success(body)
+            {
+                alert('提交成功');
+            },
+            error()
+            {
+                alert('提交失败')
+            }
+
+        })
+       }
+       function loadMes()
+       {
+          let div=document.createElement('div');
+          $.ajax({
+            type:'get',
+            url:'wall',
+            contentType:'application/json;charset=utf8',
+            success(body)
+            {
+                for(let i=0;i<body.length;i++)
+                {
+                console.log(body[i].from+'对'+body[i].to+'说'+body[i].mes);
+                }
+            }
+          })
+       }
+       
+      </script>
+
+</body>
+</html>
